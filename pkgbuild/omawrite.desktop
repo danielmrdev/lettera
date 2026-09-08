@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Omawrite
+GenericName=Plain Text Writer
+Comment=A focused plain-text writing surface for Omarchy
+Exec=omawrite %f
+Icon=omawrite
+Terminal=false
+Categories=Office;WordProcessor;TextEditor;
+MimeType=text/plain;
+Keywords=write;text;editor;omarchy;
+StartupWMClass=omawrite
