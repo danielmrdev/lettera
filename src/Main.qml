@@ -19,7 +19,9 @@ ApplicationWindow {
     readonly property color pageColor: backend.themeBackground
     readonly property color textColor: backend.themeForeground
     readonly property color selectionColor: backend.themeSelection
-    readonly property int editorFontPixelSize: Math.max(12, Math.round(20 * textScale))
+    readonly property var preferences: backend.writingSettings
+    readonly property int editorFontPixelSize: Math.max(12, Math.round(
+        preferences.fontSize * (preferences.followSystemScale ? textScale : 1)))
     property bool closeConfirmed: false
 
     Material.theme: darkMode ? Material.Dark : Material.Light
@@ -33,31 +35,51 @@ ApplicationWindow {
     }
 
     Shortcut {
+        sequence: "Ctrl+,"
+        context: Qt.ApplicationShortcut
+        onActivated: settingsPanel.visible ? settingsPanel.close() : settingsPanel.open()
+    }
+
+    SettingsPanel {
+        id: settingsPanel
+        preferences: win.preferences
+        activeLineHeight: backend.activeLineHeight
+        pageColor: win.pageColor
+        textColor: win.textColor
+        onClosed: editor.forceActiveFocus()
+    }
+
+    Shortcut {
         sequence: "Ctrl+O"
+        enabled: !settingsPanel.visible
         context: Qt.ApplicationShortcut
         onActivated: backend.openDialog()
     }
 
     Shortcut {
         sequence: "Ctrl+S"
+        enabled: !settingsPanel.visible
         context: Qt.ApplicationShortcut
         onActivated: backend.save()
     }
 
     Shortcut {
         sequence: "Ctrl+Shift+S"
+        enabled: !settingsPanel.visible
         context: Qt.ApplicationShortcut
         onActivated: backend.saveAsDialog()
     }
 
     Shortcut {
         sequence: "Ctrl+Z"
+        enabled: !settingsPanel.visible
         context: Qt.WindowShortcut
         onActivated: editor.undo()
     }
 
     Shortcut {
         sequences: ["Ctrl+Shift+Z", "Ctrl+Y"]
+        enabled: !settingsPanel.visible
         context: Qt.WindowShortcut
         onActivated: editor.redo()
     }
@@ -98,35 +120,54 @@ ApplicationWindow {
         onRejected: backend.fileDialogCanceled()
     }
 
-    TextArea {
-        id: editor
+    ScrollView {
+        id: writingView
         anchors.fill: parent
-        anchors.leftMargin: Math.max(36, (win.width - 720) / 2)
-        anchors.rightMargin: Math.max(36, (win.width - 720) / 2)
+        anchors.leftMargin: Math.max(36, (win.width - preferences.writingWidth) / 2)
+        anchors.rightMargin: anchors.leftMargin
         anchors.topMargin: 42
         anchors.bottomMargin: 42
-        text: ""
-        color: win.textColor
-        selectionColor: win.selectionColor
-        selectedTextColor: win.pageColor
-        font.family: "iA Writer Mono S"
-        font.pixelSize: win.editorFontPixelSize
-        wrapMode: TextEdit.Wrap
-        selectByMouse: true
-        persistentSelection: true
-        tabStopDistance: font.pixelSize * 4
-        background: Rectangle { color: "transparent" }
+        clip: true
+        contentWidth: availableWidth
 
-        placeholderText: "Start writing"
-        placeholderTextColor: backend.themeForeground
-        opacity: 0.98
+        TextArea {
+            id: editor
+            objectName: "editor"
+            textFormat: TextEdit.PlainText
+            text: ""
+            color: win.textColor
+            selectionColor: win.selectionColor
+            selectedTextColor: win.pageColor
+            font.family: win.preferences.fontFamily
+            font.pixelSize: win.editorFontPixelSize
+            wrapMode: TextEdit.Wrap
+            selectByMouse: true
+            persistentSelection: true
+            tabStopDistance: font.pixelSize * 4
+            background: Rectangle { color: "transparent" }
 
-        onTextChanged: backend.editorTextChanged()
+            placeholderText: "Start writing"
+            placeholderTextColor: backend.themeForeground
+            opacity: 0.98
 
-        Component.onCompleted: {
-            backend.attachDocument(textDocument);
-            forceActiveFocus();
+            onTextChanged: backend.editorTextChanged()
+
+            Component.onCompleted: {
+                backend.attachDocument(textDocument);
+                forceActiveFocus();
+            }
         }
+    }
+
+    Label {
+        objectName: "wordCount"
+        visible: preferences.showWordCount
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 12
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: backend.wordCount + (backend.wordCount === 1 ? " word" : " words")
+        color: win.textColor
+        opacity: 0.65
     }
 
     Component.onCompleted: {

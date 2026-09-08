@@ -33,7 +33,6 @@
 
 const QString lastSaveDirectorySetting = QStringLiteral("file/lastSaveDirectory");
 const QString lastOpenDirectorySetting = QStringLiteral("file/lastOpenDirectory");
-constexpr qreal lineHeightPercent = 140;
 
 QString Backend::normalizedLinkUrl(const QString &clipboardText) {
     QString candidate = clipboardText.trimmed();
@@ -711,8 +710,10 @@ void Backend::applyDocumentTypography() {
     if (!m_document)
         return;
 
+    m_activeLineHeight = m_writingSettings.lineHeight();
+    emit activeLineHeightChanged();
     QTextBlockFormat blockFormat;
-    blockFormat.setLineHeight(lineHeightPercent, QTextBlockFormat::ProportionalHeight);
+    blockFormat.setLineHeight(m_activeLineHeight, QTextBlockFormat::ProportionalHeight);
 
     // A full pass is only used for freshly loaded/attached documents, so it is
     // safe to drop undo history here (re-enabling clears the stack anyway).
@@ -735,7 +736,7 @@ void Backend::reapplyTypographyToChange() {
         return;
 
     QTextBlockFormat blockFormat;
-    blockFormat.setLineHeight(lineHeightPercent, QTextBlockFormat::ProportionalHeight);
+    blockFormat.setLineHeight(m_activeLineHeight, QTextBlockFormat::ProportionalHeight);
 
     // Format only the block(s) touched by the last edit instead of the whole
     // document, and fold the change into the preceding edit command so a single

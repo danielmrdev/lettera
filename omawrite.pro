@@ -6,11 +6,13 @@ TEMPLATE = app
 
 HEADERS += \
     src/backend.h \
+    src/writingsettings.h \
     src/systemtheme.h
 
 SOURCES += \
     src/main.cpp \
     src/backend.cpp \
+    src/writingsettings.cpp \
     src/systemtheme.cpp
 
 RESOURCES += src/resources.qrc

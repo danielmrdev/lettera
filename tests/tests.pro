@@ -7,9 +7,12 @@ INCLUDEPATH += ../src
 SOURCES += \
     tst_omawrite.cpp \
     ../src/backend.cpp \
+    ../src/writingsettings.cpp \
     ../src/systemtheme.cpp
 HEADERS += \
     ../src/backend.h \
+    ../src/writingsettings.h \
     ../src/systemtheme.h
 
 QT += widgets printsupport quickcontrols2 quickdialogs2 dbus
+RESOURCES += ../src/resources.qrc

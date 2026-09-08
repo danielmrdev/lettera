@@ -18,6 +18,20 @@ Omawrite is a small, open-source plain-text writer for Arch Linux systems runnin
 
 `Ctrl+O` opens a text file. `Ctrl+S` forces an immediate save. `Ctrl+Shift+S` chooses a new text file.
 
+## Writing preferences
+
+`Ctrl+,` toggles the settings panel. `Esc` closes it and returns focus to your text.
+
+- Choose an installed font (default: bundled iA Writer Mono S).
+- Set font size (12–40 logical px), maximum writing width (480–1200 logical px), and line height (1.00–2.20×).
+- Follow Omarchy's text scale, or use your chosen size without the system multiplier.
+- Optionally show a word count, hidden by default.
+- Reset writing preferences without changing remembered folders or window geometry.
+
+Preferences persist locally and apply immediately, **except line height**, which applies when you next open a document or window. The panel shows pending line-height changes. This preserves the current document's undo/redo history; Qt treats live paragraph spacing changes as document edits.
+
+These settings never change `.txt` contents. Autosave stays enabled and colours continue to follow Omarchy. Long documents scroll within the writing surface.
+
 ## Scope
 
 This project is deliberately Omarchy-specific. It does not promise support for macOS, Windows, other Linux distributions, Markdown, rich text, databases, cloud sync, accounts, plugins, or document hierarchies.

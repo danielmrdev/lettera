@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include "writingsettings.h"
 #include <QPointer>
 #include <QByteArray>
 #include <QFileSystemWatcher>
@@ -16,6 +17,8 @@ class QLockFile;
 
 class Backend : public QObject {
     Q_OBJECT
+    Q_PROPERTY(WritingSettings *writingSettings READ writingSettings CONSTANT)
+    Q_PROPERTY(int activeLineHeight READ activeLineHeight NOTIFY activeLineHeightChanged)
     Q_PROPERTY(QUrl fileUrl READ fileUrl NOTIFY fileUrlChanged)
     Q_PROPERTY(QUrl lastOpenDirectory READ lastOpenDirectory NOTIFY lastOpenDirectoryChanged)
     Q_PROPERTY(QString fileName READ fileName NOTIFY fileUrlChanged)
@@ -34,6 +37,8 @@ public:
     ~Backend() override;
 
     void setParentWindow(QWindow *window);
+    WritingSettings *writingSettings() { return &m_writingSettings; }
+    int activeLineHeight() const { return m_activeLineHeight; }
 
     QUrl fileUrl() const { return m_fileUrl; }
     QUrl lastOpenDirectory() const;
@@ -77,6 +82,7 @@ public:
     Q_INVOKABLE void saveWindowGeometry(int x, int y, int width, int height, bool maximized);
 
 signals:
+    void activeLineHeightChanged();
     void fileUrlChanged();
     void lastOpenDirectoryChanged();
     void modifiedChanged();
@@ -115,6 +121,8 @@ private:
     void loadOmarchyTheme();
     void watchOmarchyTheme();
 
+    WritingSettings m_writingSettings;
+    int m_activeLineHeight = 140;
     QUrl m_fileUrl;
     bool m_modified = false;
     QString m_status;
