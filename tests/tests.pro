@@ -1,11 +1,11 @@
 QT += core gui quick testlib
 CONFIG += testcase c++17
 TEMPLATE = app
-TARGET = tst_omawrite
+TARGET = tst_lettera
 
 INCLUDEPATH += ../src
 SOURCES += \
-    tst_omawrite.cpp \
+    tst_lettera.cpp \
     ../src/backend.cpp \
     ../src/writingsettings.cpp \
     ../src/systemtheme.cpp

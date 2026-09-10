@@ -1,8 +1,8 @@
-# Omawrite
+# Lettera
 
 A focused writing surface for Omarchy v4.
 
-Omawrite is a small, open-source plain-text writer for Arch Linux systems running Omarchy v4. It is intentionally not a general cross-platform editor: the supported environment is Omarchy's Arch, Hyprland, Quickshell, XDG desktop portal, and system theme.
+Lettera is a small, open-source plain-text writer for Arch Linux systems running Omarchy v4. It is intentionally not a general cross-platform editor: the supported environment is Omarchy's Arch, Hyprland, Quickshell, XDG desktop portal, and system theme.
 
 ## Behaviour
 
@@ -47,7 +47,10 @@ Dependencies:
 ```sh
 ./bin/build
 ./bin/test
+./build/lettera
 ```
+
+The executable, Arch package, desktop entry and icon are named `lettera`; the displayed application name is **Lettera**. The pre-rename internal Qt storage identity (`Omacom` / `omawrite`) is retained solely to preserve existing preferences and crash recovery, without moving or deleting user data.
 
 ## Origin
 

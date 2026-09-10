@@ -21,7 +21,7 @@ Qt 6 TextArea has no public presentation-only line-height property. `QTextCursor
 
 - `./bin/build`
 - `./bin/test`: defaults, persistence, reset isolation, invalid values, actual QML loading, keyboard panel toggle/Escape, slider keyboard change, narrow window, long-document overflow and cursor visibility, font/system scaling, no QML warnings, undo/redo preservation, unchanged file bytes, idle autosave, pending line height and new paragraphs.
-- Optional screenshot: `OMAWRITE_TEST_SCREENSHOT=/tmp/lettera-settings.png ./bin/test`.
+- Optional screenshot: `LETTERA_TEST_SCREENSHOT=/tmp/lettera-settings.png ./bin/test`.
 
 ### Result (2026-09-08)
 

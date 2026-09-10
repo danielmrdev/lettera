@@ -15,9 +15,12 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+    // Retain the pre-rename storage identity for QSettings and crash recovery.
+    // Display name, desktop ID, icon, package and executable are Lettera.
     app.setApplicationName(QStringLiteral("omawrite"));
-    app.setDesktopFileName(QStringLiteral("omawrite"));
-    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("omawrite")));
+    app.setApplicationDisplayName(QStringLiteral("Lettera"));
+    app.setDesktopFileName(QStringLiteral("lettera"));
+    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("lettera")));
 
     QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/iAWriterMonoS-Regular.ttf"));
     QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/iAWriterMonoS-Italic.ttf"));
@@ -64,7 +67,7 @@ int main(int argc, char *argv[]) {
 
     engine.load(QUrl(QStringLiteral("qrc:/Main.qml")));
     if (engine.rootObjects().isEmpty()) {
-        qCritical() << "Could not load the Omawrite interface; resource available:"
+        qCritical() << "Could not load the Lettera interface; resource available:"
                     << QFile::exists(QStringLiteral(":/Main.qml"));
         return -1;
     }

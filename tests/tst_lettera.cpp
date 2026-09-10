@@ -18,13 +18,13 @@
 
 #include "backend.h"
 
-class OmawriteTest : public QObject {
+class LetteraTest : public QObject {
     Q_OBJECT
 
 private slots:
     void initTestCase() {
         QStandardPaths::setTestModeEnabled(true);
-        QCoreApplication::setApplicationName(QStringLiteral("omawrite-settings-tests"));
+        QCoreApplication::setApplicationName(QStringLiteral("lettera-settings-tests"));
         QQuickStyle::setStyle(QStringLiteral("Material"));
         QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/iAWriterMonoS-Regular.ttf"));
         QVERIFY(m_settingsDirectory.isValid());
@@ -151,7 +151,7 @@ private slots:
 
         QTest::keyClick(window, Qt::Key_Comma, Qt::ControlModifier);
         QTRY_VERIFY(panel->property("opened").toBool());
-        const QString screenshot = qEnvironmentVariable("OMAWRITE_TEST_SCREENSHOT");
+        const QString screenshot = qEnvironmentVariable("LETTERA_TEST_SCREENSHOT");
         if (!screenshot.isEmpty()) {
             QTest::qWait(200);
             QVERIFY(window->grabWindow().save(screenshot));
@@ -297,5 +297,5 @@ private:
     QTemporaryDir m_settingsDirectory;
 };
 
-QTEST_MAIN(OmawriteTest)
-#include "tst_omawrite.moc"
+QTEST_MAIN(LetteraTest)
+#include "tst_lettera.moc"
