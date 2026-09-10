@@ -4,7 +4,7 @@
 
 Extend the independent Omawrite copy, not the pre-pivot application. Keep plain UTF-8 `.txt`, autosave, system file dialogs, and Omarchy colours. No toolbar or title bar.
 
-- Right-hand modal settings panel; Ctrl+, toggles, Escape closes and restores editor focus.
+- Right-hand modal settings panel; Ctrl+, toggles, Escape closes and restores editor focus. Ctrl+N starts a new document; unsaved changes get Save/Discard/Cancel.
 - Installed font picker plus bundled iA Writer Mono S; size 12–40 logical px, maximum writing width 480–1200 logical px, proportional line height 100–220%.
 - Optional system text scale (default on), optional word count (default off), scoped reset.
 - Local persistence via the existing QSettings identity, isolated under `writing/`.

@@ -200,6 +200,36 @@ void Backend::openDialog() {
     emit openDialogRequested();
 }
 
+void Backend::newDocument() {
+    if (m_modified) {
+        emit newDocumentConfirmationRequested();
+        return;
+    }
+    if (!m_document)
+        return;
+    m_loading = true;
+    m_document->setPlainText(QString());
+    m_document->clearUndoRedoStacks();
+    m_lastDocumentText.clear();
+    m_loading = false;
+    setFileUrl(QUrl());
+    clearRecovery();
+    setModified(false);
+    setWordCount(0);
+    setStatus(QStringLiteral("New document"));
+    applyDocumentTypography();
+}
+
+void Backend::saveAndNewDocument() {
+    m_newAfterSave = true;
+    save();
+}
+
+void Backend::discardChangesAndNewDocument() {
+    setModified(false);
+    newDocument();
+}
+
 void Backend::open(const QUrl &url) {
     if (!url.isLocalFile()) {
         setStatus(QStringLiteral("Only local files can be opened."));
@@ -256,6 +286,7 @@ void Backend::saveAs(const QUrl &url) {
 
 void Backend::fileDialogCanceled() {
     m_closeAfterSave = false;
+    m_newAfterSave = false;
 }
 
 void Backend::discardRecovery() {
@@ -490,6 +521,11 @@ void Backend::saveTo(const QUrl &url) {
     setStatus(QStringLiteral("Saved %1").arg(fileName()));
     clearRecovery();
     emit saveSucceeded();
+
+    if (m_newAfterSave) {
+        m_newAfterSave = false;
+        newDocument();
+    }
 
     if (shouldClose)
         emit closeAfterSave();

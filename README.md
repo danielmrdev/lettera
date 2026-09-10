@@ -16,7 +16,7 @@ Lettera is a small, open-source plain-text writer for Arch Linux systems running
 - Follows the active Omarchy theme and text scale.
 - Opens directly into the writing surface without an in-app toolbar or title bar.
 
-`Ctrl+O` opens a text file. `Ctrl+S` forces an immediate save. `Ctrl+Shift+S` chooses a new text file.
+`Ctrl+N` creates a new document and asks whether to save, discard, or cancel when the current document has unsaved changes. `Ctrl+O` opens a text file. `Ctrl+S` forces an immediate save. `Ctrl+Shift+S` chooses a new text file.
 
 ## Writing preferences
 

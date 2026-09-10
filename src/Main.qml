@@ -35,6 +35,13 @@ ApplicationWindow {
     }
 
     Shortcut {
+        sequence: "Ctrl+N"
+        enabled: !settingsPanel.visible
+        context: Qt.ApplicationShortcut
+        onActivated: backend.newDocument()
+    }
+
+    Shortcut {
         sequence: "Ctrl+,"
         context: Qt.ApplicationShortcut
         onActivated: settingsPanel.visible ? settingsPanel.close() : settingsPanel.open()
@@ -84,8 +91,33 @@ ApplicationWindow {
         onActivated: editor.redo()
     }
 
+    Dialog {
+        id: newDocumentDialog
+        title: "Start a new document?"
+        modal: true
+        width: Math.min(420, win.width - 48)
+        standardButtons: Dialog.NoButton
+        contentItem: Column {
+            spacing: 12
+            Label {
+                text: "Save changes to " + backend.fileName + " before starting a new document?"
+                wrapMode: Text.WordWrap
+            }
+            Row {
+                spacing: 8
+                Button { text: "Save"; onClicked: { newDocumentDialog.close(); backend.saveAndNewDocument(); } }
+                Button { text: "Discard"; onClicked: { newDocumentDialog.close(); backend.discardChangesAndNewDocument(); } }
+                Button { text: "Cancel"; onClicked: newDocumentDialog.close() }
+            }
+        }
+    }
+
     Connections {
         target: backend
+
+        function onNewDocumentConfirmationRequested() {
+            newDocumentDialog.open();
+        }
 
         function onOpenDialogRequested() {
             openFileDialog.currentFolder = backend.lastOpenDirectory;

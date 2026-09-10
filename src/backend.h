@@ -61,6 +61,9 @@ public:
 
     Q_INVOKABLE void attachDocument(QObject *textDocument);
     Q_INVOKABLE void openDialog();
+    Q_INVOKABLE void newDocument();
+    Q_INVOKABLE void saveAndNewDocument();
+    Q_INVOKABLE void discardChangesAndNewDocument();
     Q_INVOKABLE void open(const QUrl &url);
     Q_INVOKABLE void save();
     Q_INVOKABLE void saveForClose();
@@ -95,6 +98,7 @@ signals:
     void openDialogRequested();
     void saveDialogRequested(const QUrl &suggestedUrl);
     void saveSucceeded();
+    void newDocumentConfirmationRequested();
     void externalChangeDetected(bool deleted, bool locallyModified);
 
 private:
@@ -131,6 +135,7 @@ private:
     qreal m_textScale = 1.0;
     bool m_loading = false;
     bool m_closeAfterSave = false;
+    bool m_newAfterSave = false;
     bool m_formattingTypography = false;
     int m_formattedBlockCount = 0;
     int m_lastChangePos = 0;
