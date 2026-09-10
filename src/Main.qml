@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Dialogs as Dialogs
+import QtQuick.Layouts
 import QtQuick.Window
 
 ApplicationWindow {
@@ -91,23 +92,52 @@ ApplicationWindow {
         onActivated: editor.redo()
     }
 
-    Dialog {
+    Popup {
         id: newDocumentDialog
-        title: "Start a new document?"
         modal: true
-        width: Math.min(420, win.width - 48)
-        standardButtons: Dialog.NoButton
-        contentItem: Column {
-            spacing: 12
+        focus: true
+        width: Math.min(440, win.width - 48)
+        padding: 24
+        closePolicy: Popup.CloseOnEscape
+        anchors.centerIn: Overlay.overlay
+        background: Rectangle {
+            color: win.pageColor
+            border.color: backend.themeAccent
+            border.width: 1
+            radius: 8
+        }
+        Overlay.modal: Rectangle { color: "#66000000" }
+        contentItem: ColumnLayout {
+            spacing: 16
             Label {
-                text: "Save changes to " + backend.fileName + " before starting a new document?"
-                wrapMode: Text.WordWrap
+                text: "Start a new document?"
+                font.pixelSize: 24
+                font.bold: true
+                color: win.textColor
+                Layout.fillWidth: true
             }
-            Row {
+            Label {
+                text: "Save changes to " + backend.fileName
+                      + " before starting a new document?"
+                color: win.textColor
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            RowLayout {
                 spacing: 8
-                Button { text: "Save"; onClicked: { newDocumentDialog.close(); backend.saveAndNewDocument(); } }
-                Button { text: "Discard"; onClicked: { newDocumentDialog.close(); backend.discardChangesAndNewDocument(); } }
-                Button { text: "Cancel"; onClicked: newDocumentDialog.close() }
+                Layout.alignment: Qt.AlignRight
+                Button {
+                    text: "Save"
+                    onClicked: { newDocumentDialog.close(); backend.saveAndNewDocument(); }
+                }
+                Button {
+                    text: "Discard"
+                    onClicked: { newDocumentDialog.close(); backend.discardChangesAndNewDocument(); }
+                }
+                Button {
+                    text: "Cancel"
+                    onClicked: newDocumentDialog.close()
+                }
             }
         }
     }
